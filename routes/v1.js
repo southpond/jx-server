@@ -1,5 +1,5 @@
 import express from "express";
-import CityHandle from "../controller/v1/cityies";
+import CityHandle from "../controller/v1/cities";
 import Captchas from "../controller/v1/captchas";
 import SearchPlace from "../controller/v1/search";
 

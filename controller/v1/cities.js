@@ -34,7 +34,6 @@ class CityHandle extends AddressComponent {
   }
 
   async getCityById(req, res, next){
-    console.log('jieshou')
 		const cityid = req.params.id;
 		if (isNaN(cityid)) {
 			res.send({
