@@ -4,6 +4,7 @@ import chalk from "chalk";
 //连接数据库
 const options = {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
   autoIndex: false,
   reconnectTries: 30,
   reconnectInterval: 500,
