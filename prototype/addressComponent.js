@@ -47,7 +47,7 @@ class AddressComponent extends BaseComponent {
     //搜索地址
     async searchPlace(keyword, cityName, type = "search") {
         try {
-            const resObj = await this.fetch("https://apis.map.qq.com/ws/place/v1/suggestion", {
+            const resObj = await this.fetch("https://apis.map.qq.com/ws/place/v1/search", {
                 key: this.tencentkey,
                 keyword: encodeURIComponent(keyword),
                 boundary: "region(" + encodeURIComponent(cityName) + ",0)"

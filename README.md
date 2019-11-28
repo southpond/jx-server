@@ -1,5 +1,9 @@
 # 饿了么服务端
 
+## 20191128更新 ##
+* addressComponent 修改searchPlace的url;
+* routes中index添加请求前缀api字段;
+
 ## 20191101更新 ##
 * 20191101;
 
