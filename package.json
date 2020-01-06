@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "formidable": "^1.2.1",
+    "gm": "^1.23.1",
     "moment": "^2.24.0",
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.12",
