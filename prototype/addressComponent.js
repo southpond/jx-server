@@ -63,6 +63,7 @@ class AddressComponent extends BaseComponent {
   }
   //测量距离
   async getDistance(from, to, type) {
+      console.log(from,to)
     try {
       let res = await this.fetch("https://apis.map.qq.com/ws/distance/v1", {
         mode: "driving",
@@ -73,15 +74,21 @@ class AddressComponent extends BaseComponent {
       if (res.status == 0) {
         const positionArr = [];
         let timevalue;
+        console.log(res.result.elements)
         res.result.elements.forEach(item => {
           timevalue = parseInt(item.duration) + 1200;
           let durationtime = Math.ceil((timevalue % 3600) / 60) + "分钟";
           if (Math.floor(timevalue / 3600)) {
             durationtime = Math.floor(timevalue / 3600) + "小时" + durationtime;
           }
-          let distance = 
+          let distance;
+          if (item.distance >= 1000) {
+            distance = (item.distance / 1000).toFixed(2) + "公里";
+          } else {
+            distance = distance + "米";
+          }
           positionArr.push({
-            distance: item.distance,
+            distance: distance,
             order_lead_time: durationtime
           });
         });
@@ -91,7 +98,13 @@ class AddressComponent extends BaseComponent {
           return positionArr;
         }
       }
-    } catch (error) {}
+    } catch (error) {
+        if (type == 'tiemvalue') {
+            return 2000;
+        } else {
+            throw new Error('调用百度地图测距失败');
+        }
+    }
   }
 }
 

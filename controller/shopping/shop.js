@@ -6,6 +6,7 @@ class Shop extends AddressComponent {
   constructor() {
     super();
     this.addShop = this.addShop.bind(this);
+    this.getRestaurants = this.getRestaurants.bind(this);
   }
   //添加商铺
   async addShop(req, res, next) {
@@ -198,8 +199,41 @@ class Shop extends AddressComponent {
         message: err.message
       });
       return;
-	}
-	const restaurants = await ShopModel.find(filter, '-_id').limit(Number(limit)).skip(Number(offset))
+    }
+    let filter = {};
+    const from = latitude + "," + longitude;
+    let to = "";
+    const restaurants = await ShopModel.find(filter, "-_id")
+      .limit(Number(limit))
+      .skip(Number(offset));
+    //拼接腾讯地图所需经度纬度
+    restaurants.forEach((item, index) => {
+      const slpitStr = index == restaurants.length - 1 ? "" : ";";
+      to += item.latitude + "," + item.longitude + slpitStr;
+    });
+    try {
+      if (restaurants.length) {
+        //获取距离信息，并合并到数据中
+        const distance_duration = await this.getDistance(from, to);
+        console.log(distance_duration)
+        restaurants.map((item, index) => {
+          return Object.assign(item, distance_duration[index]);
+        });
+      }
+    } catch (error) {
+      restaurants.map((item, index) => {
+				return Object.assign(item, {distance: '10公里', order_lead_time: '1小时'})
+			})
+    }
+    try{
+			res.send(restaurants)
+		}catch(err){
+			res.send({
+				status: 0,
+				type: 'ERROR_GET_SHOP_LIST',
+				message: '获取店铺列表数据失败'
+			})
+		}
   }
 }
 
