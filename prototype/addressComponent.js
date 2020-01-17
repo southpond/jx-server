@@ -63,7 +63,7 @@ class AddressComponent extends BaseComponent {
   }
   //测量距离
   async getDistance(from, to, type) {
-      console.log(from,to)
+    console.log(from, to);
     try {
       let res = await this.fetch("https://apis.map.qq.com/ws/distance/v1", {
         mode: "driving",
@@ -74,7 +74,7 @@ class AddressComponent extends BaseComponent {
       if (res.status == 0) {
         const positionArr = [];
         let timevalue;
-        console.log(res.result.elements)
+        console.log(res.result.elements);
         res.result.elements.forEach(item => {
           timevalue = parseInt(item.duration) + 1200;
           let durationtime = Math.ceil((timevalue % 3600) / 60) + "分钟";
@@ -99,11 +99,46 @@ class AddressComponent extends BaseComponent {
         }
       }
     } catch (error) {
-        if (type == 'tiemvalue') {
-            return 2000;
-        } else {
-            throw new Error('调用百度地图测距失败');
-        }
+      if (type == "tiemvalue") {
+        return 2000;
+      } else {
+        throw new Error("调用百度地图测距失败");
+      }
+    }
+  }
+  //通过ip地址获取精确位置
+  async geocoder(req) {
+    try {
+      const address = await this.guessPosition(req);
+      const params = {
+        key: this.tencentkey,
+        location: address.lat + "," + address.lng
+      };
+      let res = await this.fetch("http://apis.map.qq.com/ws/geocoder/v1/", params);
+      if (res.status == 0) {
+        return res;
+      } else {
+        throw new Error("获取具体位置信息失败");
+      }
+    } catch (err) {
+      console.log("geocoder获取定位失败", err);
+      throw new Error(err);
+    }
+  }
+  //通过geohash获取精确位置
+  async getpois(lat, lng) {
+    try {
+      const params = {
+        key: this.tencentkey,
+        location: lat + "," + lng
+      };
+    } catch (error) {
+      let res = await this.fetch("http://apis.map.qq.com/ws/geocoder/v1/", params);
+      if (res.status == 0) {
+        return res;
+      } else {
+        throw new Error("通过获geohash取具体位置失败");
+      }
     }
   }
 }
