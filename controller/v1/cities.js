@@ -54,13 +54,13 @@ class CityHandle extends AddressComponent {
 	}
 
   async getCityName(req, res, next) {
-    /* try {
+    try {
       const cityInfo = await this.guessPosition(req);
       return "shanghai";
-    } catch (e) {} */
-    /* const cityInfo = await this.guessPosition(req);
-    res.send(cityInfo); */
-    return "shanghai";
+    } catch (e) {}
+    const cityInfo = await this.guessPosition(req);
+    res.send(cityInfo);
+    // return "shanghai";
   }
 }
 
