@@ -26,6 +26,6 @@
     "moment": "^2.24.0",
     "mongodb": "^3.3.5",
     "mongoose": "^5.7.12",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
